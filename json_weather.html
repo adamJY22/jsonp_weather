@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div>
+			<input type="text" name="" id="search" value="北京" />
+			<button id="btn">查询</button>
+		</div>
+		<section>
+			<p>
+				
+			</p>
+		</section>
+	</body>
+		<script src="jq.js"></script>
+		<script type="text/javascript">
+		//http://lbsyun.baidu.com百度地图ak
+		//jianshu
+		//http://api.map.baidu.com/telematics/v3/weather?location={城市名}&output={返回格式}&ak={百度AK}
+			$("#btn").click(function(){
+				var city = $("#search").val();
+				$.ajax({
+					url:"http://api.map.baidu.com/telematics/v3/weather?location="+city+"&output=json&ak=AXgCsc7NyCUsHamF1pxnQxfYp2yidVPg",
+					dataType:"jsonp",
+					success:function(data){
+						console.log(data)
+						var _data = data.results[0].weather_data[0];
+						var h = new Date().getHours();
+						var img;
+						if(h >= 7 && h <= 19){
+							img = "<img src="+_data.dayPictureUrl+"/>"
+						}else{
+							img = "<img src="+_data.nightPictureUrl+"/>"
+						};
+						var str = img + "" + _data.date + "<p>"+ _data.temperature + "<br/>" + _data.weather +"<br/>"+ _data.wind +"</p>";
+						console.log(str)
+						$("section p").html(str)
+					}
+				})
+			})
+		</script>
+</html>
